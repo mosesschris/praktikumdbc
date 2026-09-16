@@ -13,6 +13,7 @@ class MahasiswaController extends Controller
     public function index()
     {
         //
+        return Mahasiswa::all();
     }
 
     /**
@@ -29,14 +30,23 @@ class MahasiswaController extends Controller
     public function store(Request $request)
     {
         //
+        $mhs = Mahasiswa::create([
+            'nim' => $request->nim,
+            'nama' => $request->nama,
+            'jurusan' => $request->jurusan,
+            'angkatan' => $request->angkatan
+        ]);
+
+        return response()->json($mhs);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Mahasiswa $mahasiswa)
+    public function show($id)
     {
         //
+        return Mahasiswa::find($id);
     }
 
     /**
@@ -58,8 +68,10 @@ class MahasiswaController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Mahasiswa $mahasiswa)
+    public function destroy($id)
     {
         //
+        Mahasiswa::destroy($id);
+        return response()->json(["message" => "deleted"]);
     }
 }

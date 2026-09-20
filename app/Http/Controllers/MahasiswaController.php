@@ -45,8 +45,15 @@ class MahasiswaController extends Controller
      */
     public function show($id)
     {
-        //
-        return Mahasiswa::find($id);
+        $mahasiswa = Mahasiswa::find($id);
+
+        if (!$mahasiswa) {
+            return response()->json([
+                'message' => 'Data mahasiswa tidak ditemukan'
+            ], 404);
+        }
+
+        return response()->json($mahasiswa, 200);
     }
 
     /**
@@ -60,9 +67,28 @@ class MahasiswaController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Mahasiswa $mahasiswa)
+    public function update(Request $request, $id)
     {
-        //
+        $mahasiswa = Mahasiswa::find($id);
+
+        if (!$mahasiswa) {
+            return response()->json([
+                'message' => 'Data mahasiswa tidak ditemukan'
+            ], 404);
+        }
+
+        // Validasi dan update data
+        $mahasiswa->update([
+            'nim' => $request->nim ?? $mahasiswa->nim,
+            'nama' => $request->nama ?? $mahasiswa->nama,
+            'jurusan' => $request->jurusan ?? $mahasiswa->jurusan,
+            'angkatan' => $request->angkatan ?? $mahasiswa->angkatan,
+        ]);
+
+        return response()->json([
+            'message' => 'Data mahasiswa berhasil diperbarui',
+            'data' => $mahasiswa
+        ], 200);
     }
 
     /**

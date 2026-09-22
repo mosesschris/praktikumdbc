@@ -29,7 +29,13 @@ class MahasiswaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nim' => 'required|numeric',
+            'nama' => 'required|string|max:255',
+            'jurusan' => 'required|string|max:255',
+            'angkatan' => 'required|numeric'
+        ]);
+
         $mhs = Mahasiswa::create([
             'nim' => $request->nim,
             'nama' => $request->nama,
@@ -37,7 +43,10 @@ class MahasiswaController extends Controller
             'angkatan' => $request->angkatan
         ]);
 
-        return response()->json($mhs);
+        return response()->json([
+            'message' => 'Data mahasiswa berhasil ditambahkan',
+            'data' => $mhs
+        ], 201);
     }
 
     /**

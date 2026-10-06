@@ -101,8 +101,10 @@ class MahasiswaController extends Controller
             'angkatan' => $request->angkatan ?? $mahasiswa->angkatan,
         ]);
 
+        $method = strtoupper($request->method());
+
         MahasiswaLog::create([
-            'action' => 'UPDATE',
+            'action' => "UPDATE ({$method})",
             'data' => $mahasiswa->toArray(),
             'created_at' => now()
         ]);

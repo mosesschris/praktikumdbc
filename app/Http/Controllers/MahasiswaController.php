@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Mahasiswa;
+use App\Models\MahasiswaLog;
 use Illuminate\Http\Request;
 
 class MahasiswaController extends Controller
@@ -41,6 +42,12 @@ class MahasiswaController extends Controller
             'nama' => $request->nama,
             'jurusan' => $request->jurusan,
             'angkatan' => $request->angkatan
+        ]);
+
+        MahasiswaLog::create([
+            'action' => 'CREATE',
+            'data' => $mhs->toArray(),
+            'created_at' => now()
         ]);
 
         return response()->json([
@@ -94,6 +101,12 @@ class MahasiswaController extends Controller
             'angkatan' => $request->angkatan ?? $mahasiswa->angkatan,
         ]);
 
+        MahasiswaLog::create([
+            'action' => 'UPDATE',
+            'data' => $mahasiswa->toArray(),
+            'created_at' => now()
+        ]);
+
         return response()->json([
             'message' => 'Data mahasiswa berhasil diperbarui',
             'data' => $mahasiswa
@@ -105,8 +118,19 @@ class MahasiswaController extends Controller
      */
     public function destroy($id)
     {
-        //
-        Mahasiswa::destroy($id);
+        $mahasiswa = Mahasiswa::find($id);
+
+        if ($mahasiswa) {
+            $data = $mahasiswa->toArray();
+            $mahasiswa->delete();
+
+            MahasiswaLog::create([
+                'action' => 'DELETE',
+                'data' => $data,
+                'created_at' => now()
+            ]);
+        }
+
         return response()->json(["message" => "deleted"]);
     }
 }

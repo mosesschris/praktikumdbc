@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Mahasiswa;
 use App\Models\MahasiswaLog;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 
 class MahasiswaController extends Controller
 {
@@ -118,6 +119,34 @@ class MahasiswaController extends Controller
     /**
      * Remove the specified resource from storage.
      */
+    public function generateEmbedding()
+    {
+        $response = Http::withHeaders([
+            'Authorization' => 'Bearer ' . env('SUPABASE_KEY'),
+            'apikey' => env('SUPABASE_KEY'),
+        ])->post(env('SUPABASE_URL') . '/functions/v1/swift-responder');
+
+        return response()->json($response->json(), $response->status());
+    }
+
+    public function vectorSearch(Request $request)
+    {
+        $request->validate([
+            'text' => 'required|string',
+        ]);
+
+        $url = env('SUPABASE_URL') . '/functions/v1/smart-task';
+        $key = env('SUPABASE_KEY');
+
+        $response = Http::withHeaders([
+            'apikey' => $key,
+        ])->post($url, [
+            'text' => $request->text,
+        ]);
+
+        return response()->json($response->json(), $response->status());
+    }
+
     public function destroy($id)
     {
         $mahasiswa = Mahasiswa::find($id);

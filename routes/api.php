@@ -11,3 +11,5 @@ use Illuminate\Support\Facades\Route;
 
 Route::apiResource('mahasiswa', MahasiswaController::class);
 Route::post('upload', [FileUploadController::class, 'upload'])->name('api.upload');
+Route::post('/mahasiswa/generate-embedding', [MahasiswaController::class, 'generateEmbedding']);
+Route::post('/mahasiswa/vector-search', [MahasiswaController::class, 'vectorSearch']);

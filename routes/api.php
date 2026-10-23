@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\FileUploadController;
 use App\Http\Controllers\MahasiswaController;
+use App\Http\Controllers\SpatialController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -13,3 +14,6 @@ Route::apiResource('mahasiswa', MahasiswaController::class);
 Route::post('upload', [FileUploadController::class, 'upload'])->name('api.upload');
 Route::post('/mahasiswa/generate-embedding', [MahasiswaController::class, 'generateEmbedding']);
 Route::post('/mahasiswa/vector-search', [MahasiswaController::class, 'vectorSearch']);
+Route::put('/mahasiswa/{id}/lokasi', [SpatialController::class, 'updateLokasi']);
+Route::post('/mahasiswa/jarak', [SpatialController::class, 'hitungJarak']);
+Route::post('/mahasiswa/radius', [SpatialController::class, 'dalamRadius']);

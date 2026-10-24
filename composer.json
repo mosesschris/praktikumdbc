@@ -11,6 +11,7 @@
         "laravel/framework": "^13.17",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^3.0",
+        "laudis/neo4j-php-client": "^3.1",
         "mongodb/laravel-mongodb": "^5.11"
     },
     "require-dev": {
